@@ -1,0 +1,22 @@
+# Salesforce cache
+.sfdx/
+.localdevserver/
+
+# Logs
+logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/settings.json
+.idea/
+
+# Dependencies
+node_modules/
+
+# Test results
+test-results/
+coverage/

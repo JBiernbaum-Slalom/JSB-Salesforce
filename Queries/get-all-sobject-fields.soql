@@ -1,0 +1,3 @@
+SELECT QualifiedApiName, Label, DataType, IsNillable
+FROM FieldDefinition 
+WHERE EntityDefinition.QualifiedApiName = '<sObjectApiName>'

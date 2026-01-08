@@ -1,0 +1,9 @@
+SELECT Field, COUNT(Id) NumberOf
+FROM ObjectName
+GROUP BY Field
+
+/* Example Usage:
+SELECT Status, COUNT(Id) NumberOf
+FROM CampaignMember
+GROUP BY Status
+*/

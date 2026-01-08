@@ -1,0 +1,13 @@
+SELECT Field1, Field2, Field3, Field4, COUNT(Id) recordCount
+FROM ObjectName
+WHERE CreatedDate = THIS_YEAR
+GROUP BY Field1, Field2, Field3, Field4
+ORDER BY Field1, Field2, Field3, Field4
+
+/* Example Usage:
+SELECT RecordType.DeveloperName, Reason, Type, Subtype__c, COUNT(Id) recordCount
+FROM Case
+WHERE CreatedDate = THIS_YEAR
+GROUP BY RecordType.DeveloperName, Reason, Type, Subtype__c
+ORDER BY RecordType.DeveloperName, Reason, Type, Subtype__c
+*/

@@ -1,0 +1,23 @@
+SELECT Field, COUNT(Id)
+FROM ObjectName
+GROUP BY Field
+HAVING COUNT(Id) > 1
+ORDER BY COUNT(Id)
+LIMIT 2000
+
+/* Example Usage:
+SELECT Email, COUNT(Id)
+FROM Contact
+GROUP BY Email
+HAVING COUNT(Id) > 1
+ORDER BY COUNT(Id)
+LIMIT 2000
+
+SELECT Email, COUNT(Id)
+FROM Contact
+WHERE Type NOT IN ('Business', 'Customer')
+GROUP BY Email
+HAVING COUNT(Id) > 1
+ORDER BY COUNT(Id)
+LIMIT 2000
+*/
