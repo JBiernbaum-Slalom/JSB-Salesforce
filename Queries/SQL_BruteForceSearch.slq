@@ -1,0 +1,43 @@
+DECLARE @SearchTerm nvarchar(100) = N'<SEARCH_STRING>';
+
+DECLARE @sql nvarchar(max) = N'';
+
+;WITH C AS (
+    SELECT
+        s.name  AS SchemaName,
+        t.name  AS TableName,
+        c.name  AS ColumnName,
+        ty.name AS DataType
+    FROM sys.columns c
+    JOIN sys.tables t ON c.object_id = t.object_id
+    JOIN sys.schemas s ON t.schema_id = s.schema_id
+    JOIN sys.types ty ON c.user_type_id = ty.user_type_id
+    WHERE ty.name IN ('varchar', 'nvarchar', 'char', 'nchar', 'text', 'ntext')
+)
+SELECT @sql = @sql + '
+BEGIN TRY
+    IF EXISTS (
+        SELECT 1
+        FROM ' + QUOTENAME(SchemaName) + '.' + QUOTENAME(TableName) + '
+        WHERE ' + QUOTENAME(ColumnName) + ' LIKE ''%' + @SearchTerm + '%''
+    )
+    BEGIN
+        PRINT ''Found in ' + SchemaName + '.' + TableName + '.' + ColumnName + ''';
+        SELECT TOP (10)
+            ''' + SchemaName + ''' AS SchemaName,
+            ''' + TableName + ''' AS TableName,
+            ''' + ColumnName + ''' AS ColumnName,
+            ' + QUOTENAME(ColumnName) + ' AS MatchingValue
+        FROM ' + QUOTENAME(SchemaName) + '.' + QUOTENAME(TableName) + '
+        WHERE ' + QUOTENAME(ColumnName) + ' LIKE ''%' + @SearchTerm + '%''; 
+    END
+END TRY
+BEGIN CATCH
+    PRINT ''Error searching ' + SchemaName + '.' + TableName + '.' + ColumnName + ''';
+END CATCH
+'
+FROM C;
+
+PRINT @sql;  -- optional, just to inspect the generated SQL
+
+EXEC sp_executesql @sql;
